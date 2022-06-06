@@ -34,8 +34,8 @@ drive.mount('/content/drive')
 
 # Commented out IPython magic to ensure Python compatibility.
 # %cd '/content/drive/My Drive/tencent/'
-path_img='/content/drive/My Drive/tencent/img/*.jpg'
-path='/content/drive/My Drive/tencent/GroundTruth.json'
+#path_img='/content/drive/My Drive/tencent/img/*.jpg'
+path='/content/drive/My Drive/tencent/GroundTruth_Final.json'
 
 def pre_process_y(path):
     with open(path,'r') as f:
@@ -66,9 +66,10 @@ y_all=pd.DataFrame(data_set[['FreshWeightShoot','DryWeightShoot','Height','Diame
 
 #=====assign label for augmented img 
 #=====================DO NO RUN THIS CELL ============================
-aug_path='aug/*.jpeg'
+aug_path='aug2/*.jpeg'
 new_files = glob.glob(aug_path)
 
+PRINT(LEN)
 #=====get their corresponding img 
 img_list=[]
 for i in new_files:
@@ -79,8 +80,7 @@ for i in new_files:
   a2=a1[0].split("_")
   a3=a2[0]+"_"+a2[1]
   img_list.append(a3)
-print(len(img_list))
-
+print(img_list)
 
 def pre_list(img_list,new_files):
   img_list1=np.array(img_list)
@@ -97,6 +97,9 @@ def pre_list(img_list,new_files):
 
 result_df=pre_list(img_list,new_files)
 data_set =pre_process_y(path)
+print(data_set)
+print(len(result_df))
+
 
 def format_new_aug_label(data_set,result_df):
   data_set['x']=data_set['RGBImage'].str.split(pat='.',expand=True)[0]
@@ -110,4 +113,4 @@ def format_new_aug_label(data_set,result_df):
 data_final=format_new_aug_label(data_set,result_df)
 data_set1 =pre_process_y(path)
 data_all=data_final.append(data_set1)
-data_all.to_excel('aug.xlsx')
+data_all.to_excel('aug_new_all.xlsx')

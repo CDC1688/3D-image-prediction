@@ -25,7 +25,6 @@ import glob
 import cv2
 import matplotlib.pyplot as plt
 # %matplotlib inline
-
 # Load the Drive helper and mount
 from google.colab import drive
 
@@ -74,24 +73,25 @@ def pre_process_crop(path_img):
   for i in filenames:
     img =cv2.imread(i, 1)
     crop_img = img[150:980, 600:1600]
-    cv2.imwrite(i, crop_img) 
+    cv2.imwrite(i, crop_img)
 
-#pre_process_crop(path_img)   -----ONLY RUN THIS ONCE!!!!!
-
+# Commented out IPython magic to ensure Python compatibility.
 #=============================DO NOT RUN THIS CELL=====================
+# %cd '/content/drive/My Drive/tencent/'
 
 """from PIL import Image
 def myFunc(image):
     return cv2.cvtColor(image,cv2.COLOR_RGB2HSV)"""
 
-path_img='img/*.png'
+path_img='img2/*.png'
 filenames = glob.glob(path_img)
+print(len(filenames))
 
 datagen=ImageDataGenerator(
-    rotation_range=180,
+    rotation_range=90,
     width_shift_range=0.1,
     height_shift_range=0.1,
-    brightness_range=[0.7, 1.5],
+    brightness_range=[0.7, 1.2],
     rescale=1./255,
     #shear_range=0.2,  stable camera , not shear range
     #zoom_range= [0.8, 1.2],   don't impact size
@@ -111,5 +111,5 @@ for i in filenames:
   for batch in datagen.flow(x, batch_size=1,
                             save_to_dir='aug2/', save_prefix=img_name, save_format='jpeg'):
       count += 1
-      if count >= 2:
+      if count >6:
           break  # otherwise the generator would loop indefinitely
